@@ -1,0 +1,44 @@
+# 利用stringstream对report进行分割
+
+* 
+
+```
+class Solution {
+public:
+    static bool cmp(pair<int,int> a,pair<int,int> b)
+    {
+        if(a.second>b.second) return true;
+        else if(a.second<b.second) return false;
+        else{
+            if(a.first>b.first) return false;
+            else return true;
+        }
+        return true;
+    }
+    vector<int> topStudents(vector<string>& positive_feedback, vector<string>& negative_feedback, vector<string>& report, vector<int>& student_id, int k) {
+        unordered_map<string,int> pt,nt;
+        pair<int,int> pi[report.size()];
+        for(auto i:positive_feedback) pt[i]=1;
+        for(auto i:negative_feedback) nt[i]=1;
+        for(int i=0;i<report.size();i++){
+            stringstream s(report[i]);
+            string ss;
+            int id=student_id[i],score=0;
+            while(s>>ss){
+                if(pt[ss]||nt[ss]) score+=(pt[ss]?3:-1);
+            }
+            pi[i]=make_pair(id,score);
+            // s.str();
+        }
+        sort(pi,pi+report.size(),cmp);
+        vector<int> ans;
+        for(auto i:pi){
+            ans.push_back(i.first);
+            k--;
+            if(k==0) break;
+        }
+        return ans;
+    }
+};
+```
+

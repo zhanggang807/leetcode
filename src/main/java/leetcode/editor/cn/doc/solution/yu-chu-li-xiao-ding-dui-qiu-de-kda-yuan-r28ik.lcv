@@ -1,0 +1,68 @@
+> Problem: [2512. 奖励最顶尖的 K 名学生](https://leetcode.cn/problems/reward-top-k-students/description/)
+
+[TOC]
+
+# 思路
+
+1 先用哈希表预处理积极和消极的关键字
+
+2 算得每个学生的得分point，和id组成一个数组
+
+3 放入k个容量的小顶堆内，进行排序
+
+4 遍历堆，翻转列表，求得答案
+
+# Code
+
+* []
+
+```Java
+
+class Solution {
+  public List<Integer> topStudents(String[] positive_feedback, String[] negative_feedback, String[] report, int[] student_id, int k) {
+      Set<String> positiveSet = new HashSet<>(Arrays.asList(positive_feedback));
+      Set<String> negativeSet = new HashSet<>(Arrays.asList(negative_feedback));
+
+      PriorityQueue<int[]> priorityQueue = new PriorityQueue<>((o1, o2) -> o1[1] == o2[1] ? o2[0] - o1[0] : o1[1] - o2[1]);
+      int n = report.length;
+      for (int i = 0; i < n; i++) {
+          String sentence = report[i];
+          int id = student_id[i];
+          String[] arr = sentence.split(" ");
+          int point = 0;
+          for (String word : arr) {
+              if (positiveSet.contains(word)) {
+                  point += 3;
+              }
+
+              if (negativeSet.contains(word)) {
+                  point -= 1;
+              }
+          }
+
+          if (priorityQueue.isEmpty() || priorityQueue.size() < k) {
+              priorityQueue.offer(new int[]{id, point});
+              continue;
+          }
+
+          int[] tmp = priorityQueue.peek();
+          if (tmp[1] > point || (tmp[1] == point && tmp[0] < id)) {
+              continue;
+          }
+
+          priorityQueue.poll();
+          priorityQueue.offer(new int[]{id, point});
+      }
+
+      List<Integer> ans = new ArrayList<>();
+      while (!priorityQueue.isEmpty()) {
+          int[] tmp2 = priorityQueue.poll();
+          ans.add(tmp2[0]);
+      }
+
+      Collections.reverse(ans);
+      return ans;
+  }
+}
+```
+

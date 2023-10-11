@@ -1,0 +1,73 @@
+- 要求螺旋打印二叉树，即一行 ➡️ 一行 ⬅️，交替循环打印
+  - 这里要注意的是，第一行只有一个 root 节点，但相当于已经是 ➡️ 了
+  - 提前举例子，和面试官确认好初始方向，也能避免遗漏第一行的转向
+- 注意到这里还是层级遍历，和 [102. Binary Tree Level Order Traversal](https://leetcode.cn/problems/binary-tree-level-order-traversal/) 类似
+  - 大体框架还是一样，需要在节点遍历的循环内再嵌套循环，整合处理同一层的节点
+- 要达到交替方向的效果
+  - 因为在遍历时，同一层的节点是按当前层的方向依次遍历的（依次⬅️ 或依次➡️）
+  - 每遍历到一个节点，打印其值，并将其子节点加入某种待访问列表
+  - 这里希望达到的效果是
+    - 如果是从左到右➡️打印当前层的节点，如 `[3]`
+      - 最终拿到的待访问下层节点列表的顺序是从最右子节点依次到最左子节点，如 `[20, 9]`
+    - 如果是从右到左⬅️打印当前层时，如 `[20, 9]`
+      - 则下层子节点拿到从最左到最右，如 `[7, 15]`
+  - 为了保证同一层的节点访问的连续性（避免得到如 `[20.left, 20.right, 9.left, 9.right]` 的情况），在遍历某一层的节点时
+    - 如果在从左到右 ➡️ 打印，加入其子节点时应当先 left 再 right
+      `[3.left, 3.right]`
+    - 如果在从右到左 ⬅️ 打印，加入其子节点时应当先 right 再 left
+      `[20.right, 20.left, 9.right, 9.left]`
+  - 综上发现
+    - 当前层从左到右 ➡️ 打印时，最终拿到子节点列表也是 ➡️ 的顺序
+    - 当前层从右到左 ⬅️ 打印时，最终拿到子节点列表也是 ⬅️ 的顺序
+  - 这与螺旋的特性在下一层我们要求的顺序相反 ⇒ 倒序 Stack
+    - 因此，在每一层拿到的子节点先放进栈内
+    - 把当前层遍历完之后，栈内有且仅有下层的所有子节点，依次再拿出塞进访问队列
+    - 则在下层按照队列内顺序访问时，就是倒序的，即和当前层相反，符合螺旋性
+
+* []
+
+```java
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean curIsLeft = false;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> level = new ArrayList<>();
+            Stack<TreeNode> stack = new Stack<>();
+            while (size-- > 0) {
+                root = queue.poll();
+                level.add(root.val);
+                if (curIsLeft) {
+                    if (root.right != null) {
+                        stack.push(root.right);
+                    }
+                    if (root.left != null) {
+                        stack.push(root.left);
+                    }
+                } else {
+                    if (root.left != null) {
+                        stack.push(root.left);
+                    }
+                    if (root.right != null) {
+                        stack.push(root.right);
+                    }
+                }
+            }
+            while (!stack.isEmpty()) {
+                queue.offer(stack.pop());
+            }
+            curIsLeft = !curIsLeft;
+            res.add(level);
+        }
+        return res;
+    }
+}
+```
+

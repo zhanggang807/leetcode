@@ -1,0 +1,37 @@
+> Problem: [102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/description/)
+
+# Code
+
+* []
+
+```Java
+class Solution {
+  public List<List<Integer>> levelOrder(TreeNode root) {
+      // 边界判断
+      if(root == null)
+          return new ArrayList<>();
+
+      List<List<Integer>> resListList = new ArrayList<>();  // 记录结果
+      List<TreeNode> currLevelNode = new ArrayList<>(); // 记录每一层的 node
+      currLevelNode.add(root); // 录入第一层的node
+
+      while (!currLevelNode.isEmpty()){
+          // 记录层的值
+          List<Integer> currLevel = new ArrayList<>(); 
+          // 记录下层的node
+          List<TreeNode> tns = new ArrayList<>();
+          currLevelNode.forEach(e->{
+              currLevel.add(e.val);
+              if(e.left!=null)
+                  tns.add(e.left);
+              if(e.right!=null)
+                  tns.add(e.right);
+          });
+          resListList.add(currLevel);
+          currLevelNode = tns;
+      }
+      return resListList;
+  }
+}
+```
+

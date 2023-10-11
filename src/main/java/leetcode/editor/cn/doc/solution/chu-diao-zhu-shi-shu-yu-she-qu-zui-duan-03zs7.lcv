@@ -1,0 +1,39 @@
+> Problem: [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/description/)
+
+[TOC]
+
+# 复杂度
+
+- 时间复杂度:
+  $O(n)$
+
+- 空间复杂度:
+  $O(n)$
+
+# Code
+
+* []
+
+```JavaScript
+
+/**
+* @param {string} s
+* @return {boolean}
+*/
+var isValid = function (s) {
+  const map = { "(": ")", "[": "]", "{": "}" }
+  const expect = [] // 保存应该存在的右括号们
+
+  for (let str of s) {
+      if (map[str]) expect.push(map[str])
+      // 如果是右括号，且能匹配，继续校验
+      else if (expect.pop() === str) continue
+      // 出现不匹配的右括号，不合法
+      else return false
+  }
+
+  // 如果与预期一致，expect 应该为空
+  return expect.length === 0
+};
+```
+

@@ -1,0 +1,57 @@
+> Problem: [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/description/)
+
+[TOC]
+
+# 思路
+
+满足有效括号的条件
+1. 字符串长度是偶数
+2. 每一个右括号都与最近的左括号匹配，例 ([]), ()[]
+
+# 解题方法
+
+我们可以遍历字符串，遇到左括号就入栈，遇到右括号就与栈顶元素匹配，看是否匹配，如果不匹配则不是有效括号， 匹配，则弹出栈顶元素（此时消除一对括号）
+注意[]())) 这个用例，我们遇到右括号需要判断栈是否为空，如果栈已经为空，此时字符串是右括号也不是有效括号
+
+# 复杂度
+
+- 时间复杂度:
+
+> $O(n)$
+
+- 空间复杂度:
+
+> $O(n)$
+
+# Code
+
+* []
+
+```Java
+
+class Solution {
+    //([}}])
+    public boolean isValid(String s) {
+        if (s.length() % 2 != 0) {return false;}
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '{' || c == '(' || c == '[') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {return false;}
+                if ((c == '}' && stack.peek() == '{')
+                        || (c == ')' && stack.peek() == '(')
+                        || (c == ']' && stack.peek() == '[')) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+
+    }
+}
+```
+

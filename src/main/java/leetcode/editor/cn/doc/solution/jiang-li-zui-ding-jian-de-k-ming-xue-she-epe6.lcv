@@ -1,0 +1,287 @@
+#### 方法一：哈希表
+
+**思路与算法**
+
+我们首先把影响的单词存入哈希表，其中正面词汇值为 $3$ 分，负面词汇值为 $-1$ 分。
+
+然后对于每个学生，我们把他的评语按照空格分成单词，再统计学生总分 $\textit{score}$，再把 $[-\textit{score}，\textit{id}]$ 存入数组中。
+
+最后对这个数组排序，优先对第一元素进行排序，最后前 $k$ 个学生就是我们要求的结果，返回前 $k$ 个学生的 $\textit{id}$。
+
+**代码**
+
+* [sol1-C++]
+
+```C++
+class Solution {
+public:
+    vector<int> topStudents(vector<string>& positive_feedback, vector<string>& negative_feedback, vector<string>& report, vector<int>& student_id, int k) {
+        unordered_map<std::string, int> words;
+        for (const auto& word : positive_feedback) {
+            words[word] = 3;
+        }
+        for (const auto& word : negative_feedback) {
+            words[word] = -1;
+        }
+        vector<vector<int>> A;
+        for (int i = 0; i < report.size(); i++) {
+            stringstream ss; //stream根据空格分词
+            string w;
+            int score = 0;
+            ss << report[i];
+            while (ss >> w) {
+                if (words.count(w)) {
+                    score += words[w];
+                }
+            }
+            A.push_back({-score, student_id[i]});
+        }
+        sort(A.begin(), A.end());
+        vector<int> top_k;
+        for (int i = 0; i < k; i++) {
+            top_k.push_back(A[i][1]);
+        }
+        return top_k;
+    }
+};
+```
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public List<Integer> topStudents(String[] positive_feedback, String[] negative_feedback, String[] report, int[] student_id, int k) {
+        Map<String, Integer> words = new HashMap<>();
+        for (String word : positive_feedback) {
+            words.put(word, 3);
+        }
+        for (String word : negative_feedback) {
+            words.put(word, -1);
+        }
+        int n = report.length;
+        int[] scores = new int[n];
+        int[][] A = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            int score = 0;
+            for (String word : report[i].split(" ")) {
+                score += words.getOrDefault(word, 0);
+            }
+            A[i] = new int[]{-score, student_id[i]};
+        }
+        Arrays.sort(A, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+        List<Integer> topK = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            topK.add(A[i][1]);
+        }
+        return topK;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public IList<int> TopStudents(string[] positive_feedback, string[] negative_feedback, string[] report, int[] student_id, int k) {
+        IDictionary<string, int> words = new Dictionary<string, int>();
+        foreach (string word in positive_feedback) {
+            words.TryAdd(word, 3);
+        }
+        foreach (string word in negative_feedback) {
+            words.TryAdd(word, -1);
+        }
+        int n = report.Length;
+        int[] scores = new int[n];
+        int[][] A = new int[n][];
+        for (int i = 0; i < n; i++) {
+            int score = 0;
+            foreach (string word in report[i].Split(" ")) {
+                score += words.ContainsKey(word) ? words[word] : 0;
+            }
+            A[i] = new int[]{-score, student_id[i]};
+        }
+        Array.Sort(A, (a, b) => a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+        IList<int> topK = new List<int>();
+        for (int i = 0; i < k; i++) {
+            topK.Add(A[i][1]);
+        }
+        return topK;
+    }
+}
+```
+
+* [sol1-Python3]
+
+```Python
+class Solution(object):
+    def topStudents(self, positive_feedback, negative_feedback, report, student_id, k):
+        words = {}
+        for w in positive_feedback:
+            words[w] = 3
+        for w in negative_feedback:
+            words[w] = -1
+        A = []
+        for s, i in zip(report, student_id):
+            score = sum(words.get(w, 0)for w in s.split())
+            A.append([-score, i])
+        A.sort()
+        return [i for v,i in A[:k]]
+```
+
+* [sol1-Go]
+
+```Go
+func topStudents(positiveFeedback, negativeFeedback, report []string, studentId []int, k int) []int {
+	words := map[string]int{}
+	for _, w := range positiveFeedback {
+		words[w] = 3
+	}
+	for _, w := range negativeFeedback {
+		words[w] = -1
+	}
+	type pair struct{ score, id int }
+	A := make([]pair, len(report))
+	for i, r := range report {
+		score := 0
+		for _, w := range strings.Split(r, " ") {
+			score += words[w]
+		}
+		A[i] = pair{score, studentId[i]}
+	}
+	sort.Slice(A, func(i, j int) bool {
+		a, b := A[i], A[j]
+		return a.score > b.score || a.score == b.score && a.id < b.id
+	})
+	res := make([]int, k)
+	for i, p := range A[:k] {
+		res[i] = p.id
+	}
+	return res
+}
+```
+
+* [sol1-JavaScript]
+
+```JavaScript
+var topStudents = function(positive_feedback, negative_feedback, report, student_id, k) {
+	const words = {};
+	for (const word of positive_feedback) {
+		words[word] = 3;
+	}
+	for (const word of negative_feedback) {
+		words[word] = -1;
+	}
+	const A = [];
+	for (let i = 0; i < report.length; i++) {
+		let score = 0;
+		for (const word of report[i].split(" ")) {
+			score += words[word] || 0;
+		}
+		A.push([-score, student_id[i]]);
+	}
+
+	A.sort((a, b) => a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+	return A.slice(0, k).map(([, i]) => i);
+};
+```
+
+* [sol1-C]
+
+```C
+typedef struct {
+    char *key;
+    int val;
+    UT_hash_handle hh;
+} HashItem; 
+
+HashItem *hashFindItem(HashItem **obj, char *key) {
+    HashItem *pEntry = NULL;
+    HASH_FIND_STR(*obj, key, pEntry);
+    return pEntry;
+}
+
+bool hashAddItem(HashItem **obj, char *key, int val) {
+    if (hashFindItem(obj, key)) {
+        return false;
+    }
+    HashItem *pEntry = (HashItem *)malloc(sizeof(HashItem));
+    pEntry->key = key;
+    pEntry->val = val;
+    HASH_ADD_STR(*obj, key, pEntry);
+    return true;
+}
+
+bool hashSetItem(HashItem **obj, char *key, int val) {
+    HashItem *pEntry = hashFindItem(obj, key);
+    if (!pEntry) {
+        hashAddItem(obj, key, val);
+    } else {
+        pEntry->val = val;
+    }
+    return true;
+}
+
+int hashGetItem(HashItem **obj, char *key, int defaultVal) {
+    HashItem *pEntry = hashFindItem(obj, key);
+    if (!pEntry) {
+        return defaultVal;
+    }
+    return pEntry->val;
+}
+
+void hashFree(HashItem **obj) {
+    HashItem *curr = NULL, *tmp = NULL;
+    HASH_ITER(hh, *obj, curr, tmp) {
+        HASH_DEL(*obj, curr);  
+        free(curr);
+    }
+}
+
+static int cmp(const void *a, const void *b) {
+    int socre1 = ((int *)a)[0], score2 = ((int *)b)[0];
+    int id1 = ((int *)a)[1], id2 = ((int *)b)[1];
+    if (socre1 == score2) {
+        return id1 - id2;
+    }
+    return socre1 - score2;
+}
+
+int* topStudents(char ** positive_feedback, int positive_feedbackSize, char ** negative_feedback, int negative_feedbackSize, char ** report, int reportSize, int* student_id, int student_idSize, int k, int* returnSize) {
+    HashItem *words = NULL;
+    for (int i = 0; i < positive_feedbackSize; i++) {
+        char *word = positive_feedback[i];
+        hashAddItem(&words, word, 3);
+    }
+    for (int i = 0; i < negative_feedbackSize; i++) {
+        char *word = negative_feedback[i];
+        hashAddItem(&words, word, -1);
+    }
+    
+    int A[reportSize][2];
+    for (int i = 0; i < reportSize; i++) {
+        int score = 0;
+        char *p = strtok(report[i], " ");
+        while (p != NULL) {
+            score += hashGetItem(&words, p, 0);
+            p = strtok(NULL, " ");
+        }
+        A[i][0] = -score;
+        A[i][1] = student_id[i];
+    }
+    qsort(A, reportSize, sizeof(A[0]), cmp);
+    int *top_k = (int *)calloc(k, sizeof(int));
+    for (int i = 0; i < k; i++) {
+        top_k[i] = A[i][1];
+    }
+    *returnSize = k;
+    hashFree(&words);
+    return top_k;
+}
+```
+
+**复杂度分析**
+
+- 时间复杂度：$O(nlogn)$，其中 $n$ 是 $\textit{report}$ 的长度。使用优先队列可以提高到 $O(nlogk)$。
+
+- 空间复杂度：$O(n)$。
+

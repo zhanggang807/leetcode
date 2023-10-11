@@ -1,0 +1,72 @@
+> Problem: [2512. 奖励最顶尖的 K 名学生](https://leetcode.cn/problems/reward-top-k-students/description/)
+
+[TOC]
+
+# 思路
+
+> 就使用直观的方法做：
+> 1. 用2个hashset分别存positive词 和 negative词
+> 2. 编写一个student类，便于使用优先队列排序
+> 3. 自定义优先队列比较器，使其按要求排序
+> 4. 加下来就是遍历学生，将学生依次加入优先队列了
+> 5. 将前k个学生出队即是结果
+
+# Code
+
+* []
+
+```Java
+
+public class Solution {
+  // set + 堆排序
+  public List<Integer> topStudents(String[] positive_feedback
+          , String[] negative_feedback
+          , String[] report
+          , int[] student_id
+          , int k) {
+      // 初始化set
+      Set<String> positiveSet = new HashSet<>(Arrays.asList(positive_feedback));
+      Set<String> negativeSet = new HashSet<>(Arrays.asList(negative_feedback));
+      int len = student_id.length;
+      // 使用优先队列（堆排序 + 自定义比较器）
+      Queue<StudentInfo> pq = new PriorityQueue<>(((o1, o2) -> {
+          if(o1.points != o2.points)
+              return o2.points - o1.points;
+          return o1.studentId - o2.studentId;
+      })); 
+      for (int i = 0; i < len; i++) {
+          // 逐个将学生加入到优先队列中（有序插入）
+          String reportStu = report[i];
+          String[] reportStuWords = reportStu.split(" ");
+          int pointsTmp = 0;
+          for (int j = 0; j < reportStuWords.length; j++) {
+              String wordTmp = reportStuWords[j];
+              if(positiveSet.contains(wordTmp))
+                  pointsTmp += 3;
+              if(negativeSet.contains(wordTmp))
+                  pointsTmp -= 1;
+          }
+          pq.add(new StudentInfo(student_id[i], pointsTmp));
+      }
+      // 出队前k个即是结果
+      List<Integer> retList = new ArrayList<>();
+      for (int i = 0; i < k; i++) {
+          retList.add(pq.poll().studentId);
+      }
+      return retList;
+  }
+
+}
+
+class StudentInfo{
+  int studentId;
+  int points;
+
+  StudentInfo(int id, int points){
+      this.studentId = id;
+      this.points = points;
+  }
+  
+}
+```
+
