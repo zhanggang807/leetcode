@@ -32,7 +32,7 @@ public class RewardTopKStudents {
 
     // leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        /*
+        /**
          * 这个方法是融和了几个解决方案，用java的api来做的，几个方案都有可取之处，这里我优化整合了一下
          */
         public List<Integer> topStudents(String[] positive_feedback, String[] negative_feedback, String[] report, int[] student_id, int k) {
@@ -73,7 +73,7 @@ public class RewardTopKStudents {
         }
     }
 
-    /*
+    /**
      * 也可以用二维数组做，但是java语言，面向对象更方便清晰
      */
     class StudentInfo {
