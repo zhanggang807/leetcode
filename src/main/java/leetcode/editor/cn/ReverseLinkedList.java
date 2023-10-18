@@ -1,5 +1,7 @@
 package leetcode.editor.cn;
 
+import leetcode.editor.cn.common.ListNode;
+
 /**
  * 题目标题 反转链表
  * 题目标记 reverse-linked-list
@@ -22,41 +24,9 @@ public class ReverseLinkedList {
         System.out.println("反转后：" + listNode);
     }
 
-    /**
+    /*
      * FIXME 才过了一个月，自己就又写不出来完整代码了，是没有完全理解，还是记不住！！！
      */
-    static class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
-        public ListNode addNext(int val) {
-            next = new ListNode(val);
-            return next;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("val = " + this.val + ", whole = " + this.val);
-            ListNode temp = this.next;
-            while (temp != null) {
-                sb.append(",").append(temp.val);
-                temp = temp.next;
-            }
-            return sb.toString();
-        }
-    }
 
     /**
      * 提交答案用 指针法吧，自己再写出来一个递归法
