@@ -1,0 +1,49 @@
+/**
+* Definition for singly-linked list.
+* class ListNode {
+* 
+
+      int val;
+
+* 
+
+      ListNode next;
+
+* 
+
+      ListNode(int x) {
+
+* 
+
+      val = x;
+
+* 
+
+      next = null;
+
+* 
+
+      }
+
+* }
+  */
+  //add方法，返回布尔值，存在返回false,集合不变化，不存在返回true，添加到集合
+  public class Solution {
+  public boolean hasCycle(ListNode head) {
+  Set<ListNode> set=new HashSet<>();
+  if(head==null||head.next==null){
+  return false;
+  }
+  ListNode node=head;
+  while(node!=null){
+  if(!set.add(node)){
+  return true;
+
+          }
+          node=node.next;
+      }
+      return false;
+
+  }
+  }
+

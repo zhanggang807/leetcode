@@ -7,6 +7,7 @@ import leetcode.editor.cn.common.ListNode;
  * 题目标记 intersection-of-two-linked-lists
  * 题目编号 160
  * 时间 2023-10-18 15:49:47
+ * 已提交
  */
 public class IntersectionOfTwoLinkedLists {
     public static void main(String[] args) {
