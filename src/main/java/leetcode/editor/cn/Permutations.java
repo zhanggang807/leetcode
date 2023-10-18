@@ -58,6 +58,7 @@ public class Permutations {
             }
 
             // 回溯所用路径记录 和 visited数组
+            // 换成LinkedList也行，add 和 removeLast配合使用
             Deque<Integer> path = new ArrayDeque<>();
             boolean[] used = new boolean[len];
 
