@@ -30,6 +30,7 @@ public class IntersectionOfTwoLinkedLists {
 
     /*
         相交点之后的路，距离一样；那么如果相交点之前的路长不同的话，只需要各自都走一遍，速度一样，终会相遇！
+        a走完，再重新从b开始走，b走完，再重新从a开始走，这样路就一样了
      */
 
     // leetcode submit region begin(Prohibit modification and deletion)
