@@ -1,6 +1,7 @@
 package leetcode.editor.cn;
 
 import com.sun.xml.internal.xsom.XSUnionSimpleType;
+import leetcode.editor.cn.common.TreeNode;
 
 import java.util.*;
 
@@ -83,24 +84,6 @@ public class BinaryTreeLevelOrderTraversal {
     // 移除	remove()	poll()
     // 检查	element()	peek()
 
-    static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
 
     // leetcode submit region begin(Prohibit modification and deletion)
 

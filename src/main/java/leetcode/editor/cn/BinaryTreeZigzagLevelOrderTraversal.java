@@ -1,6 +1,7 @@
 package leetcode.editor.cn;
 
-import javax.swing.tree.TreeNode;
+import leetcode.editor.cn.common.TreeNode;
+
 import java.util.*;
 
 /**
@@ -23,25 +24,6 @@ public class BinaryTreeZigzagLevelOrderTraversal {
         List<List<Integer>> lists = solution.zigzagLevelOrder(root);
         System.out.println(lists);// 可能直接打印出来这种格式 [[3], [20, 9], [15, 7]]
 
-    }
-
-    static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
     }
 
     // leetcode submit region begin(Prohibit modification and deletion)
