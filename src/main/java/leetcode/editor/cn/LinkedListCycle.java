@@ -66,6 +66,24 @@ public class LinkedListCycle {
             return false;
         }
 
+        /**
+         * 这个是在我面试中写出来的，这种写法也能跑成功，哈哈哈哈
+         * while和if条件换了一下位置，return值也换了下位置，想了想确实也是可以的，哈哈哈哈
+         */
+        public boolean ifCircleList(ListNode head) {
+            ListNode slow = head;
+            ListNode fast = head.next;
+            while (fast != slow) {
+                if (fast == null || fast.next == null) {
+                    return false;
+                }
+
+                fast = fast.next.next;
+                slow = slow.next;
+            }
+            return true;
+        }
+
     }
     // leetcode submit region end(Prohibit modification and deletion)
 
