@@ -18,7 +18,7 @@ public class SubarraySumEqualsK {
     }
 
     // leetcode submit region begin(Prohibit modification and deletion)
-    public class Solution {
+    class Solution {
         /**
          * 前缀和+哈希表 优化
          * 前缀和数组的定义，这里理解这个很重要，给定一个数组，生成前缀和的算法是

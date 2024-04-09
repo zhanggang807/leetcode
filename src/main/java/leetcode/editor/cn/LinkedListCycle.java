@@ -49,7 +49,7 @@ public class LinkedListCycle {
      * }
      * }
      */
-    public class Solution {
+    class Solution {
         public boolean hasCycle(ListNode head) {
             // 快慢指针，如果相遇，说明快指针反过来追上慢指针，一定有环
             if (head == null || head.next == null) return false;

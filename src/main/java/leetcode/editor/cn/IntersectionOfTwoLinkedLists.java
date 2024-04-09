@@ -47,7 +47,7 @@ public class IntersectionOfTwoLinkedLists {
      * }
      * }
      */
-    public class Solution {
+    class Solution {
         public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
             if (headA == null || headB == null) return null;
             ListNode pA = headA, pB = headB;
